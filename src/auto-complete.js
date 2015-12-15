@@ -10,6 +10,7 @@
  *
  * @param {expression} source Expression to evaluate upon changing the input content. The input value is available as
  *    $query. The result of the expression must be a promise that eventually resolves to an array of strings.
+ * @param {string=} [listTemplate=NA] URL of a custom template for rendering the autocomplete list.
  * @param {string=} [template=NA] URL or id of a custom template for rendering each element of the autocomplete list.
  * @param {string=} [displayProperty=tagsInput.displayText] Property to be rendered as the autocomplete label.
  * @param {number=} [debounceDelay=100] Amount of time, in milliseconds, to wait before evaluating the expression in
@@ -133,7 +134,9 @@ tagsInput.directive('autoComplete', function($document, $timeout, $sce, $q, tags
         restrict: 'E',
         require: '^tagsInput',
         scope: { source: '&' },
-        templateUrl: 'ngTagsInput/auto-complete.html',
+        templateUrl: function(scope, attrs){
+          return attrs.listTemplate || 'ngTagsInput/auto-complete.html'
+        },
         controller: function($scope, $element, $attrs) {
             $scope.events = tiUtil.simplePubSub();
 
