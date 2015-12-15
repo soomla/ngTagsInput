@@ -82,12 +82,7 @@ tagsInput.directive('autoComplete', function($document, $timeout, $sce, $q, tags
                 items = getDifference(items, tags);
                 self.items = items.slice(0, options.maxResultsToShow);
 
-                if (self.items.length > 0) {
-                    self.show();
-                }
-                else {
-                    self.reset();
-                }
+                self.show();
             });
         }, options.debounceDelay);
 
@@ -133,9 +128,9 @@ tagsInput.directive('autoComplete', function($document, $timeout, $sce, $q, tags
     return {
         restrict: 'E',
         require: '^tagsInput',
-        scope: { source: '&' },
+        scope: { source: '&', categories: '=' },
         templateUrl: function(scope, attrs){
-          return attrs.listTemplate || 'ngTagsInput/auto-complete.html'
+          return attrs.listTemplate;
         },
         controller: function($scope, $element, $attrs) {
             $scope.events = tiUtil.simplePubSub();
@@ -190,7 +185,6 @@ tagsInput.directive('autoComplete', function($document, $timeout, $sce, $q, tags
 
                 if (suggestionList.selected) {
                     tagsInput.addTag(angular.copy(suggestionList.selected));
-                    suggestionList.reset();
                     tagsInput.focusInput();
 
                     added = true;
@@ -202,16 +196,21 @@ tagsInput.directive('autoComplete', function($document, $timeout, $sce, $q, tags
                 return item[options.tagsInput.keyProperty || options.tagsInput.displayProperty];
             };
 
+            scope.forceLoad = function(){
+              var value = tagsInput.getCurrentTagText();
+              suggestionList.load(value, tagsInput.getTags());
+            };
+
             tagsInput
-                .on('tag-added tag-removed invalid-tag input-blur', function() {
+                .on('invalid-tag input-blur', function() {
                     suggestionList.reset();
+                })
+                .on('tag-removed', function() {
+                  suggestionList.load(tagsInput.getCurrentTagText(), tagsInput.getTags());
                 })
                 .on('input-change', function(value) {
                     if (shouldLoadSuggestions(value)) {
                         suggestionList.load(value, tagsInput.getTags());
-                    }
-                    else {
-                        suggestionList.reset();
                     }
                 })
                 .on('input-focus', function() {
