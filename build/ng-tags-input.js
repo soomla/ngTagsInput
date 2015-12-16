@@ -5,7 +5,7 @@
  * Copyright (c) 2013-2015 Michael Benford
  * License: MIT
  *
- * Generated at 2015-12-15 17:41:53 +0200
+ * Generated at 2015-12-16 10:57:17 +0200
  */
 (function() {
 'use strict';
@@ -520,7 +520,6 @@ tagsInput.directive('tiTagItem', ["tiUtil", function(tiUtil) {
  *
  * @param {expression} source Expression to evaluate upon changing the input content. The input value is available as
  *    $query. The result of the expression must be a promise that eventually resolves to an array of strings.
- * @param {string=} [listTemplate=NA] URL of a custom template for rendering the autocomplete list.
  * @param {string=} [template=NA] URL or id of a custom template for rendering each element of the autocomplete list.
  * @param {string=} [displayProperty=tagsInput.displayText] Property to be rendered as the autocomplete label.
  * @param {number=} [debounceDelay=100] Amount of time, in milliseconds, to wait before evaluating the expression in
@@ -639,9 +638,7 @@ tagsInput.directive('autoComplete', ["$document", "$timeout", "$sce", "$q", "tag
         restrict: 'E',
         require: '^tagsInput',
         scope: { source: '&', categories: '=' },
-        templateUrl: function(scope, attrs){
-          return attrs.listTemplate;
-        },
+        templateUrl: 'ngTagsInput/auto-complete.html',
         controller: ["$scope", "$element", "$attrs", function($scope, $element, $attrs) {
             $scope.events = tiUtil.simplePubSub();
 
@@ -1142,7 +1139,7 @@ tagsInput.run(["$templateCache", function($templateCache) {
   );
 
   $templateCache.put('ngTagsInput/auto-complete.html',
-    "<div class=\"autocomplete\" ng-if=\"suggestionList.visible\"><ul class=\"suggestion-list\"><li class=\"suggestion-item\" ng-repeat=\"item in suggestionList.items track by track(item)\" ng-class=\"{selected: item == suggestionList.selected}\" ng-click=\"addSuggestionByIndex($index)\" ng-mouseenter=\"suggestionList.select($index)\"><ti-autocomplete-match data=\"::item\"></ti-autocomplete-match></li></ul></div>"
+    "<div class=\"autocomplete\" ng-if=\"suggestionList.visible\"><uib-tabset><uib-tab ng-repeat=\"category in categories\" heading=\"{{category.title}}\" active=\"category.active\" select=\"forceLoad()\"><span class=\"col-sm-2 suggestion-item\" ng-repeat=\"item in suggestionList.items track by track(item)\" ng-class=\"{selected: item == suggestionList.selected}\" ng-click=\"addSuggestionByIndex($index)\" ng-mouseenter=\"suggestionList.select($index)\"><ti-autocomplete-match data=\"::item\"></ti-autocomplete-match></span> <span ng-if=\"suggestionList.items.length === 0\">No tags available</span></uib-tab></uib-tabset></div>"
   );
 
   $templateCache.put('ngTagsInput/auto-complete-match.html',
