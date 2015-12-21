@@ -5,7 +5,7 @@
  * Copyright (c) 2013-2015 Michael Benford
  * License: MIT
  *
- * Generated at 2015-12-16 10:57:17 +0200
+ * Generated at 2015-12-21 14:21:36 +0200
  */
 (function() {
 'use strict';
@@ -1139,7 +1139,7 @@ tagsInput.run(["$templateCache", function($templateCache) {
   );
 
   $templateCache.put('ngTagsInput/auto-complete.html',
-    "<div class=\"autocomplete\" ng-if=\"suggestionList.visible\"><uib-tabset><uib-tab ng-repeat=\"category in categories\" heading=\"{{category.title}}\" active=\"category.active\" select=\"forceLoad()\"><span class=\"col-sm-2 suggestion-item\" ng-repeat=\"item in suggestionList.items track by track(item)\" ng-class=\"{selected: item == suggestionList.selected}\" ng-click=\"addSuggestionByIndex($index)\" ng-mouseenter=\"suggestionList.select($index)\"><ti-autocomplete-match data=\"::item\"></ti-autocomplete-match></span> <span ng-if=\"suggestionList.items.length === 0\">No tags available</span></uib-tab></uib-tabset></div>"
+    "<div class=\"autocomplete\" ng-if=\"suggestionList.visible\"><uib-tabset><uib-tab ng-repeat=\"category in categories\" heading=\"{{category.title}}\" active=\"category.active\" select=\"forceLoad()\"><span class=\"col-sm-2 suggestion-item\" ng-repeat=\"item in suggestionList.items track by track(item)\" ng-class=\"{selected: item == suggestionList.selected}\" ng-click=\"addSuggestionByIndex($index)\" ng-mouseenter=\"suggestionList.select($index)\"><ti-autocomplete-match data=\"::item\"></ti-autocomplete-match></span> <span class=\"no-tags\" ng-if=\"suggestionList.items.length === 0\">No tags found</span></uib-tab></uib-tabset></div>"
   );
 
   $templateCache.put('ngTagsInput/auto-complete-match.html',
