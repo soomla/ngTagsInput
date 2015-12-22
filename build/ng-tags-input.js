@@ -5,7 +5,7 @@
  * Copyright (c) 2013-2015 Michael Benford
  * License: MIT
  *
- * Generated at 2015-12-21 14:21:36 +0200
+ * Generated at 2015-12-22 18:16:25 +0200
  */
 (function() {
 'use strict';
@@ -569,7 +569,7 @@ tagsInput.directive('autoComplete', ["$document", "$timeout", "$sce", "$q", "tag
         };
         self.show = function() {
             if (options.selectFirstMatch) {
-                self.select(0);
+                self.select(1);
             }
             else {
                 self.selected = null;
@@ -579,7 +579,7 @@ tagsInput.directive('autoComplete', ["$document", "$timeout", "$sce", "$q", "tag
         self.load = tiUtil.debounce(function(query, tags) {
             self.query = query;
 
-            var promise = $q.when(loadFn({ $query: query }));
+            var promise = $q.when(loadFn({ $query: query, $tags: tags }));
             lastPromise = promise;
 
             promise.then(function(items) {
@@ -596,9 +596,15 @@ tagsInput.directive('autoComplete', ["$document", "$timeout", "$sce", "$q", "tag
         }, options.debounceDelay);
 
         self.selectNext = function() {
+            if(self.items[self.index + 1] && self.items[self.index + 1].isCategory) {
+              self.index += 1;
+            }
             self.select(++self.index);
         };
         self.selectPrior = function() {
+            if(self.items[self.index - 1 ] && self.items[self.index - 1].isCategory) {
+              self.index -= 1;
+            }
             self.select(--self.index);
         };
         self.select = function(index) {
@@ -606,7 +612,7 @@ tagsInput.directive('autoComplete', ["$document", "$timeout", "$sce", "$q", "tag
                 index = self.items.length - 1;
             }
             else if (index >= self.items.length) {
-                index = 0;
+                index = 1;
             }
             self.index = index;
             self.selected = self.items[index];
@@ -1139,7 +1145,7 @@ tagsInput.run(["$templateCache", function($templateCache) {
   );
 
   $templateCache.put('ngTagsInput/auto-complete.html',
-    "<div class=\"autocomplete\" ng-if=\"suggestionList.visible\"><uib-tabset><uib-tab ng-repeat=\"category in categories\" heading=\"{{category.title}}\" active=\"category.active\" select=\"forceLoad()\"><span class=\"col-sm-2 suggestion-item\" ng-repeat=\"item in suggestionList.items track by track(item)\" ng-class=\"{selected: item == suggestionList.selected}\" ng-click=\"addSuggestionByIndex($index)\" ng-mouseenter=\"suggestionList.select($index)\"><ti-autocomplete-match data=\"::item\"></ti-autocomplete-match></span> <span class=\"no-tags\" ng-if=\"suggestionList.items.length === 0\">No tags found</span></uib-tab></uib-tabset></div>"
+    "<div class=\"autocomplete\" ng-if=\"suggestionList.visible\"><div class=\"col-sm-3\"><ul><li ng-repeat=\"category in categories track by category._id\"><input type=\"checkbox\" ng-model=\"category.selected\" ng-change=\"forceLoad()\"> {{::category.name}} ({{category.availableTags}})</li></ul></div><div class=\"col-sm-2 suggestion-item\" ng-repeat=\"item in suggestionList.items track by item._id\" ng-class=\"{selected: item == suggestionList.selected}\" ng-click=\"!item.isCategory && addSuggestionByIndex($index)\" ng-mouseenter=\"!item.isCategory && suggestionList.select($index)\"><ti-autocomplete-match data=\"::item\"></ti-autocomplete-match></div><span class=\"no-tags\" ng-if=\"suggestionList.items.length === 0\">No tags found</span></div>"
   );
 
   $templateCache.put('ngTagsInput/auto-complete-match.html',

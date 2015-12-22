@@ -59,7 +59,7 @@ tagsInput.directive('autoComplete', function($document, $timeout, $sce, $q, tags
         };
         self.show = function() {
             if (options.selectFirstMatch) {
-                self.select(0);
+                self.select(1);
             }
             else {
                 self.selected = null;
@@ -69,7 +69,7 @@ tagsInput.directive('autoComplete', function($document, $timeout, $sce, $q, tags
         self.load = tiUtil.debounce(function(query, tags) {
             self.query = query;
 
-            var promise = $q.when(loadFn({ $query: query }));
+            var promise = $q.when(loadFn({ $query: query, $tags: tags }));
             lastPromise = promise;
 
             promise.then(function(items) {
@@ -86,9 +86,15 @@ tagsInput.directive('autoComplete', function($document, $timeout, $sce, $q, tags
         }, options.debounceDelay);
 
         self.selectNext = function() {
+            if(self.items[self.index + 1] && self.items[self.index + 1].isCategory) {
+              self.index += 1;
+            }
             self.select(++self.index);
         };
         self.selectPrior = function() {
+            if(self.items[self.index - 1 ] && self.items[self.index - 1].isCategory) {
+              self.index -= 1;
+            }
             self.select(--self.index);
         };
         self.select = function(index) {
@@ -96,7 +102,7 @@ tagsInput.directive('autoComplete', function($document, $timeout, $sce, $q, tags
                 index = self.items.length - 1;
             }
             else if (index >= self.items.length) {
-                index = 0;
+                index = 1;
             }
             self.index = index;
             self.selected = self.items[index];

@@ -1,15 +1,19 @@
 <div class="autocomplete" ng-if="suggestionList.visible">
-  <uib-tabset>
-    <uib-tab ng-repeat="category in categories" heading="{{category.title}}" active="category.active"
-             select="forceLoad()">
-      <span class="col-sm-2 suggestion-item"
-          ng-repeat="item in suggestionList.items track by track(item)"
-          ng-class="{selected: item == suggestionList.selected}"
-          ng-click="addSuggestionByIndex($index)"
-          ng-mouseenter="suggestionList.select($index)">
-        <ti-autocomplete-match data="::item"></ti-autocomplete-match>
-      </span>
-      <span class="no-tags" ng-if="suggestionList.items.length === 0">No tags found</span>
-    </uib-tab>
-  </uib-tabset>
+  <div class="col-sm-3">
+    <ul>
+      <li ng-repeat="category in categories track by category._id">
+        <input type="checkbox" ng-model="category.selected" ng-change="forceLoad()">
+        {{::category.name}} ({{category.availableTags}})
+      </li>
+    </ul>
+  </div>
+  <div class="col-sm-2 suggestion-item"
+      ng-repeat="item in suggestionList.items track by item._id"
+        ng-class="{selected: item == suggestionList.selected}"
+        ng-click="!item.isCategory && addSuggestionByIndex($index)"
+        ng-mouseenter="!item.isCategory && suggestionList.select($index)">
+
+      <ti-autocomplete-match data="::item"></ti-autocomplete-match>
+  </div>
+  <span class="no-tags" ng-if="suggestionList.items.length === 0">No tags found</span>
 </div>
