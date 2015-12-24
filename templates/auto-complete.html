@@ -1,19 +1,34 @@
 <div class="autocomplete" ng-if="suggestionList.visible">
-  <div class="col-sm-3">
-    <ul>
-      <li ng-repeat="category in categories track by category._id">
-        <input type="checkbox" ng-model="category.selected" ng-change="forceLoad()">
-        {{::category.name}} ({{category.availableTags}})
-      </li>
-    </ul>
-  </div>
-  <div class="col-sm-2 suggestion-item"
-      ng-repeat="item in suggestionList.items track by item._id"
-        ng-class="{selected: item == suggestionList.selected}"
+
+  <div class="row">
+    <div class="col-xs-3">
+
+      <ul class="list-unstyled autocomplete-categories">
+        <li ng-repeat="category in categories track by category._id">
+          <label>
+            <input type="checkbox" ng-model="category.selected" ng-change="forceLoad()">
+            {{::category.name}} ({{category.availableTags}})
+          </label>
+        </li>
+      </ul>
+
+    </div>
+    <div class="col-xs-9">
+
+      <ul class="list-unstyled suggested-tags {{item.color}}">
+        <li ng-repeat="item in suggestionList.items track by item._id"
+        ng-class="{selected: item == suggestionList.selected, category: item.isCategory}"
         ng-click="!item.isCategory && addSuggestionByIndex($index)"
         ng-mouseenter="!item.isCategory && suggestionList.select($index)">
 
-      <ti-autocomplete-match data="::item"></ti-autocomplete-match>
+        <ti-autocomplete-match data="::item"></ti-autocomplete-match>
+      </li>
+    </ul>
+
+  </div></div>
+
+  <div class="no-tags" ng-if="suggestionList.items.length === 0">
+    No tags found
   </div>
-  <span class="no-tags" ng-if="suggestionList.items.length === 0">No tags found</span>
+
 </div>

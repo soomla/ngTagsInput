@@ -5,7 +5,7 @@
  * Copyright (c) 2013-2015 Michael Benford
  * License: MIT
  *
- * Generated at 2015-12-22 18:16:25 +0200
+ * Generated at 2015-12-24 15:49:34 +0200
  */
 (function() {
 'use strict';
@@ -1145,7 +1145,7 @@ tagsInput.run(["$templateCache", function($templateCache) {
   );
 
   $templateCache.put('ngTagsInput/auto-complete.html',
-    "<div class=\"autocomplete\" ng-if=\"suggestionList.visible\"><div class=\"col-sm-3\"><ul><li ng-repeat=\"category in categories track by category._id\"><input type=\"checkbox\" ng-model=\"category.selected\" ng-change=\"forceLoad()\"> {{::category.name}} ({{category.availableTags}})</li></ul></div><div class=\"col-sm-2 suggestion-item\" ng-repeat=\"item in suggestionList.items track by item._id\" ng-class=\"{selected: item == suggestionList.selected}\" ng-click=\"!item.isCategory && addSuggestionByIndex($index)\" ng-mouseenter=\"!item.isCategory && suggestionList.select($index)\"><ti-autocomplete-match data=\"::item\"></ti-autocomplete-match></div><span class=\"no-tags\" ng-if=\"suggestionList.items.length === 0\">No tags found</span></div>"
+    "<div class=\"autocomplete\" ng-if=\"suggestionList.visible\"><div class=\"row\"><div class=\"col-xs-3\"><ul class=\"list-unstyled autocomplete-categories\"><li ng-repeat=\"category in categories track by category._id\"><label><input type=\"checkbox\" ng-model=\"category.selected\" ng-change=\"forceLoad()\"> {{::category.name}} ({{category.availableTags}})</label></li></ul></div><div class=\"col-xs-9\"><ul class=\"list-unstyled suggested-tags {{item.color}}\"><li ng-repeat=\"item in suggestionList.items track by item._id\" ng-class=\"{selected: item == suggestionList.selected, category: item.isCategory}\" ng-click=\"!item.isCategory && addSuggestionByIndex($index)\" ng-mouseenter=\"!item.isCategory && suggestionList.select($index)\"><ti-autocomplete-match data=\"::item\"></ti-autocomplete-match></li></ul></div></div><div class=\"no-tags\" ng-if=\"suggestionList.items.length === 0\">No tags found</div></div>"
   );
 
   $templateCache.put('ngTagsInput/auto-complete-match.html',
