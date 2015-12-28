@@ -14,21 +14,21 @@
 
     </div>
     <div class="col-xs-9">
+      <div class=“suggested-tags-wrapper”>
+        <ul class="list-unstyled suggested-tags {{item.color}}">
+          <li ng-repeat="item in suggestionList.items track by item._id"
+          ng-class="{selected: item == suggestionList.selected, category: item.isCategory}"
+          ng-click="!item.isCategory && addSuggestionByIndex($index)"
+          ng-mouseenter="!item.isCategory && suggestionList.select($index)">
 
-      <ul class="list-unstyled suggested-tags {{item.color}}">
-        <li ng-repeat="item in suggestionList.items track by item._id"
-        ng-class="{selected: item == suggestionList.selected, category: item.isCategory}"
-        ng-click="!item.isCategory && addSuggestionByIndex($index)"
-        ng-mouseenter="!item.isCategory && suggestionList.select($index)">
+          <ti-autocomplete-match data="::item"></ti-autocomplete-match>
+        </li>
+      </ul>
 
-        <ti-autocomplete-match data="::item"></ti-autocomplete-match>
-      </li>
-    </ul>
+    </div></div>
 
-  </div></div>
+    <div class="no-tags" ng-if="suggestionList.items.length === 0">
+      No tags found
+    </div>
 
-  <div class="no-tags" ng-if="suggestionList.items.length === 0">
-    No tags found
   </div>
-
-</div>
