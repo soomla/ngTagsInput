@@ -16,8 +16,8 @@
     <div class="col-xs-9">
       <div class=“suggested-tags-wrapper”>
         <ul class="list-unstyled suggested-tags" ng-class="{'one-col': suggestionList.items.length <= 20 , 'two-col': suggestionList.items.length > 20 && suggestionList.items.length <= 40, 'three-col': suggestionList.items.length > 40 }">
-          <li ng-repeat="item in suggestionList.items track by item._id" class="bg-{{item.colors.bg}} text-{{item.colors.text}}"
-          ng-class='{selected: item == suggestionList.selected, category: item.isCategory}'
+          <li ng-repeat="item in suggestionList.items track by item._id"
+          ng-class="['bg-{{item.colors.bg}}', 'text-{{item.colors.bg}}', {selected: item == suggestionList.selected, category: item.isCategory}]"
           ng-click="!item.isCategory && addSuggestionByIndex($index)"
           ng-mouseenter="!item.isCategory && suggestionList.select($index)">
 
