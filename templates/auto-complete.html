@@ -4,7 +4,7 @@
     <div class="col-xs-3">
 
       <ul class="list-unstyled autocomplete-categories">
-        <li ng-repeat="category in categories track by category._id">
+        <li ng-repeat="category in categories |orderBy: 'order' track by category._id">
           <label ng-class="['text-{{category.colors.text}}', {active: category.selected}]">
             <input type="checkbox" ng-model="category.selected" ng-change="forceLoad()">
             {{::category.name}} ({{category.availableTags}})
